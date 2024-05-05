@@ -24,24 +24,26 @@ fiskNode.no = insektNode;
 insektNode.yes = new Node("Er det en myre?");
 insektNode.no = new Node("Er det en sommerfugl?");
 
-function guessAnimal(now) {
+//funktion til at spille spillet
+function playGame(now) {
     const svar = prompt(now.question + " (Ja/Nej): ").toLowerCase();
     if (svar === "ja") {
         if (now.yes) {
-            return guessAnimal(now.yes);
+            playGame(now.yes);
         } else {
-            return "Jeg gætter: " + now.question;
+            alert("Jeg gætter: " + now.question);
+            restartGame();
         }
     } else {
         if (now.no) {
-            return guessAnimal(now.no);
+            playGame(now.no);
         } else {
-            //Hvis computeren ikke gætter korrekt
+            //hvis computeren ikke gætter korrekt
             const nytDyr = prompt("Hvilket dyr var der tale om?");
             const nytSpørgsmål = prompt("Hvilket spørgsmål kunne stilles for at identificere dyret korrekt?");
             const nyDyrNode = new Node(nytDyr);
             const nytSpørgsmålNode = new Node(nytSpørgsmål, nyDyrNode, now);
-            //Opdatere træet
+            //opdatere træet
             const parent = findParentNode(træ, now);
             if (parent) {
                 if (parent.yes === now) {
@@ -50,18 +52,24 @@ function guessAnimal(now) {
                     parent.no = nytSpørgsmålNode;
                 }
             }
-            return "Dyret er blevet tilføjet til træet. Spillet starter forfra.";
+            alert("Dyret er blevet tilføjet til træet. Spillet starter forfra.");
+            restartGame();
         }
     }
 }
 
-//funktion til at finde parentnode til en given node
+//funktion genstarter spillet
+function restartGame() {
+    alert("Velkommen til Gæt Dyret spillet!");
+    playGame(træ);
+}
+
+//funktion til at finde parentnoden til en given node
 function findParentNode(root, node) {
     if (!root || !node) return null;
     if (root.yes === node || root.no === node) return root;
     return findParentNode(root.yes, node) || findParentNode(root.no, node);
 }
 
-//starter spillet
-alert("Velkommen til Gæt Dyret spillet!");
-alert(guessAnimal(træ));
+//Start spillet
+restartGame();
