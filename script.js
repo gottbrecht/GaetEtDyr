@@ -43,17 +43,22 @@ fiskNode.no = insektNode;
 insektNode.yes = new Node("Er det en myre?");
 insektNode.no = new Node("Er det en sommerfugl?");
 
-//funktion til at spille spillet
 function playGame(now) {
-    const svar = prompt(now.question + " (Ja/Nej): ").toLowerCase();
-    if (svar === "ja") {
+    const svar = prompt(now.question + " (Ja/Nej): ");
+    //kontroller om brugeren har annulleret prompt-vinduet
+    if (svar === null) {
+        return;
+    }
+    //fortsæt med at behandle brugerens svar som normalt
+    const svarLowerCase = svar.toLowerCase();
+    if (svarLowerCase === "ja") {
         if (now.yes) {
             playGame(now.yes);
         } else {
             alert("Jeg gætter: " + now.question);
             restartGame();
         }
-    } else {
+    } else if (svarLowerCase === "nej") {
         if (now.no) {
             playGame(now.no);
         } else {
@@ -74,6 +79,10 @@ function playGame(now) {
             alert("Dyret er blevet tilføjet til træet. Spillet starter forfra.");
             restartGame();
         }
+    } else {
+        //hvis brugeren svarer på en anden måde end "ja" eller "nej"
+        alert("Venligst svar 'Ja' eller 'Nej'.");
+        playGame(now); // Spørg igen
     }
 }
 
