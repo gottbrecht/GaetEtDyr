@@ -6,6 +6,25 @@ class Node {
     }
 }
 
+//Funktion til at læse træet fra JSON-filen
+function loadTreeFromJSON(jsonString) {
+    try {
+        return JSON.parse(jsonString);
+    } catch (error) {
+        console.error("Fejl ved indlæsning af træet fra JSON:", error);
+        return null;
+    }
+}
+
+//Funktion til at gemme træet som JSON
+function saveTreeToJSON(tree) {
+    try {
+        return JSON.stringify(tree, null, 2);
+    } catch (error) {
+        console.error("Fejl ved gemning af træet som JSON:", error);
+        return null;
+    }
+}
 //Opret det oprindelige træ
 const træ = new Node("Har det pels?");
 const pattedyrNode = new Node("Er det et pattedyr?");
@@ -71,5 +90,28 @@ function findParentNode(root, node) {
     return findParentNode(root.yes, node) || findParentNode(root.no, node);
 }
 
-//Start spillet
+//funktion til at hente træet fra JSON-filen
+function loadTree() {
+    const jsonString = prompt("Indtast træet som JSON:");
+    if (jsonString) {
+        træ = loadTreeFromJSON(jsonString);
+        if (træ) {
+            alert("Træet er blevet indlæst fra JSON.");
+        } else {
+            alert("Fejl ved indlæsning af træet fra JSON.");
+        }
+    }
+}
+
+//funktion til at gemme træet som JSON
+function saveTree() {
+    const jsonTree = saveTreeToJSON(træ);
+    if (jsonTree) {
+        alert("Træet er blevet gemt som JSON:\n" + jsonTree);
+    } else {
+        alert("Fejl ved gemning af træet som JSON.");
+    }
+}
+
+//Starter spillet
 restartGame();
